@@ -8,13 +8,20 @@
   </engines>
 
   <platform name="android">
-    <config-file parent="/*" target="res/xml/config.xml">
-    </config-file>
-    <config-file parent="/*" target="AndroidManifest.xml" />
+    <framework src="com.facebook.android:audience-network-sdk:5.3.0" />
+    <framework src="com.google.ads.mediation:facebook:5.3.0.0" />
+
+    <!-- Prevents compilation error: https://developer.android.com/studio/build/multidex.html -->
+    <!-- when add additional mediation plugins -->
+    <dependency id="cordova-plugin-multidex" />
   </platform>
 
   <platform name="ios">
-    <config-file parent="/*" target="config.xml">
-    </config-file>
+    <pods-config ios-min-version="9.0" use-frameworks="true" />
+    <pod id="FBAudienceNetwork" version="4.44.0" />
+    <pod id="GoogleMobileAdsMediationFacebook" version="4.44.0.0" />
+
+    <!-- Prevents compilation failures when using pod's id with additional mediations plugins -->
+    <dependency id="cordova-plugin-cocoapod-support" />
   </platform>
 </plugin>

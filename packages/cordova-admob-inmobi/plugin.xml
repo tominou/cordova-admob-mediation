@@ -8,12 +8,38 @@
   </engines>
 
   <platform name="android">
-    <source-file src="src/android/libadapterinmobi.jar" target-dir="libs" />
+    <framework src="com.inmobi.monetization:inmobi-ads:7.2.7" />
+    <framework src="com.google.ads.mediation:inmobi:7.2.7.0" />
+    <framework src="com.squareup.picasso:picasso:2.5.2" />
+    <framework src="com.android.support:recyclerview-v7:28.0.0" />
+
+    <config-file parent="/manifest/application" target="AndroidManifest.xml">
+      <activity android:name="com.inmobi.rendering.InMobiAdActivity"
+        android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize|screenLayout"
+        android:hardwareAccelerated="true"
+        android:resizeableActivity="false"
+        android:theme="@android:style/Theme.NoTitleBar" />
+
+      <receiver
+        android:name="com.inmobi.commons.core.utilities.uid.ImIdShareBroadCastReceiver"
+        android:enabled="true"
+        android:exported="true">
+          <intent-filter>
+            <action android:name="com.inmobi.share.id"/>
+          </intent-filter>
+      </receiver>
+    </config-file>
+
+    <!-- Prevents compilation error: https://developer.android.com/studio/build/multidex.html -->
+    <!-- when add additional mediation plugins -->
+    <dependency id="cordova-plugin-multidex" />
   </platform>
 
   <platform name="ios">
-    <header-file src="src/ios/GADInMobiExtras.h" />
-    <header-file src="src/ios/GADMAdapterInMobi.h" />
-    <source-file src="src/ios/libAdapterInMobi.a" framework="true" />
+    <pods-config ios-min-version="9.0" use-frameworks="true" />
+    <pod id="GoogleMobileAdsMediationInMobi" version="7.2.7.0" />
+
+    <!-- Prevents compilation failures when using pod's id with additional mediations plugins -->
+    <dependency id="cordova-plugin-cocoapod-support" />
   </platform>
 </plugin>
